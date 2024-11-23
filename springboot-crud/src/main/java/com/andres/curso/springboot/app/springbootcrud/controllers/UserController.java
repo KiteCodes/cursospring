@@ -22,28 +22,27 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    
+
     @Autowired
-    private UserService userService;
+    private UserService service;
 
     @GetMapping
-    public List<User> getUsers() {
-        return userService.findAll();
+    public List<User> list() {
+        return service.findAll();
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult result) {
+    public ResponseEntity<?> create(@Valid @RequestBody User user, BindingResult result) {
         if (result.hasFieldErrors()) {
             return validation(result);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) {
-        user.setEnabled(true);
+    public ResponseEntity<?> register(@Valid @RequestBody User user, BindingResult result) {
         user.setAdmin(false);
-        return createUser(user, result);
+        return create(user, result);
     }
 
     private ResponseEntity<?> validation(BindingResult result) {

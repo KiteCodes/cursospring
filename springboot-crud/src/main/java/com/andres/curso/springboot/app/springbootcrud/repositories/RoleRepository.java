@@ -6,7 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.andres.curso.springboot.app.springbootcrud.entities.Role;
 
-public interface RoleRepository extends CrudRepository<Role, Long>{
-    
+public interface RoleRepository extends CrudRepository<Role, Long> {
+
     Optional<Role> findByName(String name);
-} 
+    
+}

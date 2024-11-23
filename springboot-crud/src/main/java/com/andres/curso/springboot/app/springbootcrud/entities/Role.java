@@ -14,15 +14,16 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "roles")
+@Table(name="roles")
 public class Role {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
     private String name;
-    
+
     @JsonIgnoreProperties({"roles", "handler", "hibernateLazyInitializer"})
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
@@ -65,7 +66,6 @@ public class Role {
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((users == null) ? 0 : users.hashCode());
         return result;
     }
 
@@ -88,11 +88,8 @@ public class Role {
                 return false;
         } else if (!name.equals(other.name))
             return false;
-        if (users == null) {
-            if (other.users != null)
-                return false;
-        } else if (!users.equals(other.users))
-            return false;
         return true;
     }
+
+    
 }

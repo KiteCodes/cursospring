@@ -16,8 +16,9 @@ import com.andres.curso.springboot.app.springbootcrud.repositories.UserRepositor
 
 @Service
 public class UserServiceImpl implements UserService{
+
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository repository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional(readOnly = true)
     public List<User> findAll() {
-        return (List<User>) userRepository.findAll();
+        return (List<User>) repository.findAll();
     }
 
     @Override
@@ -40,15 +41,19 @@ public class UserServiceImpl implements UserService{
 
         optionalRoleUser.ifPresent(roles::add);
 
-        if(user.isAdmin()) {
+        if (user.isAdmin()) {
             Optional<Role> optionalRoleAdmin = roleRepository.findByName("ROLE_ADMIN");
             optionalRoleAdmin.ifPresent(roles::add);
         }
 
         user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return repository.save(user);
+    }
 
-        return userRepository.save(user);
+    @Override
+    public boolean existsByUsername(String username) {
+        return repository.existsByUsername(username);
     }
     
 }
